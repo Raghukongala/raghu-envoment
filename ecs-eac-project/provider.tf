@@ -10,7 +10,7 @@ terraform {
     bucket         = "raghu-tf-state-bucket"
     key            = "ecs-eac/terraform.tfstate"
     region         = "ap-south-1"
-    dynamodb_table = "terraform-locks"
+    use_lockfile   = true
   }
 }
 
