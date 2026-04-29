@@ -1,0 +1,9 @@
+[
+ {
+  "name":"nginx",
+  "image":"nginx:latest",
+  "essential":true,
+  "portMappings":[{"containerPort":80,"hostPort":80}],
+  "environment":[{"name":"APP_ENV","value":"dev"}]
+ }
+]
