@@ -2,7 +2,9 @@
 # VPC
 ############################
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 
   tags = {
     Name = "raghu-vpc"
@@ -38,6 +40,20 @@ resource "aws_subnet" "public_b" {
 }
 
 ############################
+# Public Subnet C
+############################
+resource "aws_subnet" "public_c" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.3.0/24"
+  availability_zone       = "ap-south-1c"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "public-subnet-c"
+  }
+}
+
+############################
 # Internet Gateway
 ############################
 resource "aws_internet_gateway" "igw" {
@@ -65,7 +81,7 @@ resource "aws_route_table" "public_rt" {
 }
 
 ############################
-# Associate Route Table
+# Route Table Associations
 ############################
 resource "aws_route_table_association" "subnet_a_assoc" {
   subnet_id      = aws_subnet.public_a.id
@@ -74,5 +90,10 @@ resource "aws_route_table_association" "subnet_a_assoc" {
 
 resource "aws_route_table_association" "subnet_b_assoc" {
   subnet_id      = aws_subnet.public_b.id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+resource "aws_route_table_association" "subnet_c_assoc" {
+  subnet_id      = aws_subnet.public_c.id
   route_table_id = aws_route_table.public_rt.id
 }
